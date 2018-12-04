@@ -1,0 +1,9 @@
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=hunter2_example_password
+POSTGRES_DB=seedmanager
+PGDATA=/data
+RABBITMQ_DEFAULT_USER=rmquser
+RABBITMQ_DEFAULT_PASS=hunter2_example_password
+INDOCKER=true
+TZ=Europe/Stockholm
+SECRET_KEY=MAKEYOUROWN
