@@ -10,13 +10,17 @@ Create and empty data directory for postgres called data.
 
 Copy `example_env_file` to env_file and update it with your settings.
 
-Start Munin:
+Start Munin web and database to prepare migrations:
 
-`$ docker-compose up -d`
+`$ docker-compose up web db -d`
 
 Apply database migrations (when db and web has started):
 
 `$ ./migrate.sh`
+
+Bring up the other containers;
+
+`$ docker-compose up -d`
 
 Set up a superuser:
 
