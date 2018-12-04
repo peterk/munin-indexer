@@ -19,6 +19,7 @@ from munin import views
 import munin.jobs
 
 urlpatterns = [
+    path('', views.index),
     path('admin/', admin.site.urls),
     path('seeds/<int:seed_id>/', views.add_post_url_for_seed),
     path('add_post/', views.add_post_url),

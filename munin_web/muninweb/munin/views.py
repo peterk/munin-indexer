@@ -3,6 +3,43 @@ from django.views.decorators.http import require_http_methods
 from munin.models import *
 from django.http import Http404, HttpResponse, HttpResponseForbidden
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+
+
+def index(request):
+
+    if not request.user.is_authenticated:
+         return HttpResponseForbidden()
+    
+    collections = Collection.objects.all()
+
+    if request.POST:
+        seedstxt =  request.POST.get("seeds")
+        collection_id = int(request.POST.get("collection"))
+        
+        if not collection_id > 0:
+            messages.error(request, 'No collection selected.')
+            return render(request, 'index.html', context={"collections":collections}) 
+        
+        count = 0
+
+        for seed in seedstxt.splitlines():
+            try:
+                obj = Seed.objects.get(seed=seed.strip())
+                print("Skipping " + seed)
+            except Seed.DoesNotExist:
+                obj = Seed(seed=seed.strip(), collection_id=collection_id)
+                obj.save()
+                count += 1
+                print("Added " + seed)
+
+        messages.success(request, f"Added {count} seeds for collection {collection_id}")
+    
+
+    return render(request, 'index.html', context={"collections":collections})
+
+
 
 @csrf_exempt
 @require_http_methods(["POST"])
