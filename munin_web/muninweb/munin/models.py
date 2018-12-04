@@ -183,6 +183,15 @@ class Post(models.Model):
         self.state = 1
         self.save()
 
+    def short_url(self):
+        return str(self)[:100]
+
+
+    def warc_size_kb(self):
+        if self.warc_size:
+            return int(self.warc_size / 1024)
+
+
 
     def __str__(self):
         return self.url.replace("https://","").replace("http://","")
