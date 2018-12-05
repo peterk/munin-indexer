@@ -22,7 +22,7 @@ services:
     build: ./munin_web
     env_file:
       - env_file
-    command: sh -c './wait-for.sh db:5432 -t 40 -- python manage.py runserver 0.0.0.0:8000'
+    command: sh -c './wait-for.sh db:5432 -t 60 -- python manage.py runserver 0.0.0.0:8000'
     volumes:
       - ./munin_web/muninweb:/code
       - ./jobs:/jobs        
@@ -36,7 +36,7 @@ services:
     build: ./munin_indexer
     env_file:
       - env_file
-    command: sh -c './wait-for.sh web:8000 -t 40 -- python worker.py'
+    command: sh -c './wait-for.sh web:8000 -t 60 -- python worker.py'
     depends_on:
       - web
       - mq
@@ -51,5 +51,5 @@ services:
     depends_on:
       - web
       - mq
-    command: sh -c './wait-for.sh web:8000 -t 40 -- python worker.py'
+    command: sh -c './wait-for.sh web:8000 -t 60 -- python worker.py'
     shm_size: 1G

@@ -9,7 +9,7 @@ scheduler = BackgroundScheduler()
 scheduler.add_jobstore(DjangoJobStore(), "default")
 
 
-@register_job(scheduler, "interval", seconds=30, replace_existing=True)
+@register_job(scheduler, "interval", seconds=60, replace_existing=True)
 def queue_crawls():
     """Check all seeds currently not in queue status, compare last_check time
     with check_frequency and add them to seed queue. Seeds will be crawled for links to posts."""
@@ -32,7 +32,7 @@ def queue_crawls():
                 print(f"Not yet time for seed {seed.id}: {seed.seed}")
 
 
-@register_job(scheduler, "interval", seconds=20, replace_existing=True)
+@register_job(scheduler, "interval", seconds=120, replace_existing=True)
 def queue_archiving():
     """Check which posts that haven't been archived yet and push them to the queue."""
 

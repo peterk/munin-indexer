@@ -3,8 +3,8 @@ from django.contrib import admin
 from .models import *
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('short_url', 'warc_size_kb', 'retry_count', 'state')
-    list_filter = ('retry_count', 'state',)
+    list_display = ('short_url', 'warc_size_kb', 'created_at', 'retry_count', 'state')
+    list_filter = ('retry_count', 'state', 'created_at')
 
 class PostInline(admin.TabularInline):
     model = Post
@@ -24,6 +24,7 @@ class CollectionAdmin(admin.ModelAdmin):
     ]
 
         
+admin.site.site_header = 'Munin'
 
 admin.site.register(Collection, CollectionAdmin)
 admin.site.register(Seed, SeedAdmin)
