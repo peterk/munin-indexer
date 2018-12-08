@@ -1,0 +1,64 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block content %}
+          <div class="animated fadeIn">
+            <div class="row">
+              <div class="col-sm-6 col-lg-3">
+                <div class="card text-white bg-primary">
+                  <div class="card-body">
+                    <div class="text-value">{{post_queue_length}} / {{seed_queue_length}}</div>
+                    <div>Post / Seed crawl queue</div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.col-->
+              <div class="col-sm-6 col-lg-3">
+                <div class="card text-white bg-primary">
+                  <div class="card-body">
+                    <div class="text-value">{{warc_file_count}}</div>
+                    <div>WARC files</div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.col-->
+              <div class="col-sm-6 col-lg-3">
+                <div class="card text-white bg-primary">
+                  <div class="card-body">
+                    <div class="btn-group float-right">
+                    </div>
+                    <div class="text-value">{{archive_size}} Gb</div>
+                    <div>Archive size</div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.col-->
+              <div class="col-sm-6 col-lg-3">
+                <div class="card text-white bg-danger">
+                  <div class="card-body">
+                    <div class="btn-group float-right">
+                    </div>
+                    <div class="text-value">0 / 0</div>
+                    <div>Crawl errors</div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.col-->
+            </div>
+            <!-- /.row-->
+            <div class="card">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-sm-5">
+                    <h4 class="card-title mb-0">Stats</h4>
+                  </div>
+                </div>
+                <div class="chart-wrapper" style="height:300px;margin-top:40px;">
+                  <canvas class="chart" id="main-chart" height="300"></canvas>
+                </div>
+              </div>
+            </div>
+            <!-- /.card-->
+          </div>
+
+ {% endblock %}

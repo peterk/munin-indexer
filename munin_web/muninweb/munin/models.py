@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 import pytz
 import hashlib
 from hashlib import md5
-
+from django.db.models import Avg, Max, Min, Sum
 
 class Collection(models.Model):
     name = models.CharField(max_length=255)
@@ -73,7 +73,6 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True,)
     jobid = models.CharField(max_length=200, blank=True, null=True)
     retry_count = models.PositiveIntegerField(default=0)
-
 
 
     def make_job(self, jobid, output_path, description=""):
@@ -192,6 +191,20 @@ class Post(models.Model):
             return int(self.warc_size / 1024)
 
 
-
     def __str__(self):
         return self.url.replace("https://","").replace("http://","")
+
+
+class Stats(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True,)
+    warc_count = models.PositiveIntegerField(default=0)
+    warcs_created = models.PositiveIntegerField(default=0)
+    post_crawl_queue = models.PositiveIntegerField(default=0)
+    seed_crawl_queue = models.PositiveIntegerField(default=0)
+    warc_size_total = models.FloatField(default=0.0)
+    retry_count = models.PositiveIntegerField(default=0)
+    seed_count = models.PositiveIntegerField(default=0)
+    post_count = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return str(self.created_at.isoformat())

@@ -17,9 +17,12 @@ from django.contrib import admin
 from django.urls import path
 from munin import views
 import munin.jobs
+from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
     path('', views.index),
+    path('chart_script.js', views.chart_script),
+    path('bulk_add/', views.bulk_add),
     path('admin/', admin.site.urls),
     path('seeds/<int:seed_id>/', views.add_post_url_for_seed),
     path('add_post/', views.add_post_url),

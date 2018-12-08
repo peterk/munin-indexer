@@ -4,9 +4,33 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from django_apscheduler.jobstores import DjangoJobStore, register_events, register_job
 from munin.models import *
 from datetime import datetime, timedelta
+from django.utils import timezone
+import os
+import pytz
 
 scheduler = BackgroundScheduler()
 scheduler.add_jobstore(DjangoJobStore(), "default")
+
+@register_job(scheduler, "interval", seconds=3600, replace_existing=True)
+def queue_stat():
+
+    stat = Stats()
+    now = datetime.now(pytz.timezone(os.environ["TZ"]))
+    last_hr_timedelta = datetime.now() - timedelta(hours=1)
+
+    stat.warcs_created = Post.objects.filter(state=2, warc_size__gt=0, created_at__gt=last_hr_timedelta).count()
+    stat.post_crawl_queue = Post.objects.filter(state=2).count()
+    stat.seed_crawl_queue = Seed.objects.filter(state=2).count()
+
+    warc_size = Post.objects.filter(created_at__gt=last_hr_timedelta).aggregate(Sum("warc_size"))["warc_size__sum"]
+    if warc_size:
+        stat.warc_size_total = round(warc_size / 1024 / 1024 / 1024, 2)
+
+    stat.retry_count = Post.objects.filter(retry_count__gt=1, created_at__gt=last_hr_timedelta).count()
+    stat.seed_count = Seed.objects.filter(state=2).count()
+    stat.post_count = Post.objects.filter(state=1).count()
+    stat.save()
+    print("Saved stats item")
 
 
 @register_job(scheduler, "interval", seconds=60, replace_existing=True)
@@ -22,7 +46,9 @@ def queue_crawls():
             #new seed - add it immediately
             seed.enqueue()
         else:
-            if datetime.now(pytz.timezone('Europe/Stockholm')) > (seed.last_check + timedelta(seconds=seed.check_frequency)):
+            now = datetime.now(pytz.timezone(os.environ["TZ"])) 
+            print(f"Comparing {now} to {seed.last_check}")
+            if now > (seed.last_check + timedelta(seconds=seed.check_frequency)):
                 print(datetime.now())
                 print(seed.last_check)
                 print(seed.check_frequency)
@@ -46,7 +72,7 @@ def queue_archiving():
             #new post - add it immediately
             post.enqueue()
         else:
-            if datetime.now(pytz.timezone('Europe/Stockholm')) > (post.last_crawled_at + timedelta(seconds=600)):
+            if datetime.now(pytz.timezone(os.environ["TZ"])) > (post.last_crawled_at + timedelta(seconds=600)):
                 post.enqueue()
             else:
                 #not yet

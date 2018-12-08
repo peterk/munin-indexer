@@ -1,0 +1,41 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-8 pb-3">
+        <h1>Bulk add seed URLs to collection</h1>
+        <p>(Already existing seeds will be skipped)</p>
+           {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %} 
+            <form role="form" action="/bulk_add/" method="post">
+            {% csrf_token %}
+				<div class="form-group">
+					<label for="collection">
+						Collection
+					</label>
+                    <select class="custom-select" id="collection" name="collection">
+                        {% for collection in collections %}
+                        <option value="{{collection.id}}">{{collection.name}}</option>
+                        {% endfor %}
+                    </select>
+				</div>
+				<div class="form-group">
+					<label for="seeds">
+						Seeds
+					</label>
+                    <textarea class="form-control" name="seeds" id="seeds" cols="20" rows="20"></textarea>
+				</div>
+				<button type="submit" class="btn btn-primary">Add seeds</button>
+			</form>
+		</div>
+		<div class="col-md-4">
+		</div>
+	</div>
+
+ {% endblock %}

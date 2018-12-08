@@ -17,15 +17,20 @@ class SeedAdmin(admin.ModelAdmin):
 class SeedInline(admin.TabularInline):
     model = Seed
 
-
 class CollectionAdmin(admin.ModelAdmin):
    inlines = [
         SeedInline,
     ]
 
         
+class StatAdmin(admin.ModelAdmin):
+    list_display = ('created_at', 'warc_count', 'warcs_created', 'post_crawl_queue', 'post_count', 'seed_count', 'warc_size_total', 'retry_count')
+
+
+
 admin.site.site_header = 'Munin'
 
 admin.site.register(Collection, CollectionAdmin)
 admin.site.register(Seed, SeedAdmin)
 admin.site.register(Post, PostAdmin)
+admin.site.register(Stats, StatAdmin)

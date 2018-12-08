@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="description" content="Munin">
+    <title>Munin dashboard</title>
+    <link href="{% static "css/coreui-icons.min.css" %}" rel="stylesheet">
+    <link href="{% static "css/font-awesome.min.css" %}" rel="stylesheet">
+    <link href="{% static "css/simple-line-icons.css" %}" rel="stylesheet">
+    <link href="{% static "css/style.css" %}" rel="stylesheet">
+    <link href="{% static "css/pace.min.css" %}" rel="stylesheet">
+  </head>
+  <body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
+    <header class="app-header navbar">
+      <button class="navbar-toggler sidebar-toggler d-lg-none mr-auto" type="button" data-toggle="sidebar-show">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+        Munin
+      </a>
+      <ul class="nav navbar-nav d-md-down-none ml-auto">
+        <li class="nav-item px-3">
+          <a class="nav-link" href="/">Dashboard</a>
+        </li>
+        <li class="nav-item px-3">
+          <a class="nav-link" href="/admin/">Admin</a>
+        </li>
+      </ul>
+    </header>
+    <div class="app-body">
+      <div class="sidebar">
+        <nav class="sidebar-nav">
+          <ul class="nav">
+            <li class="nav-item">
+              <a class="nav-link" href="/bulk_add/">
+                <i class="nav-icon icon-pencil"></i> Bulk add seeds</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/admin/munin/collection/">
+                <i class="nav-icon icon-pencil"></i> Collections</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/admin/">
+                <i class="nav-icon icon-settings"></i> Admin</a>
+            </li>
+          </ul>
+        </nav>
+        <button class="sidebar-minimizer brand-minimizer" type="button"></button>
+      </div>
+      <main class="main">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">Home</li>
+          <li class="breadcrumb-item">
+            <a href="#">Admin</a>
+          </li>
+          <li class="breadcrumb-item active">Dashboard</li>
+        </ol>
+        <div class="container-fluid">
+
+            {% block content %}
+            {% endblock %}
+          
+        </div>
+      </main>
+      
+    </div>
+    <footer class="app-footer">
+      <div>
+        <a href="https://coreui.io">Admin template from CoreUI</a>
+        <span>&copy; 2018 creativeLabs.</span>
+      </div>
+      <div class="ml-auto">
+        <a href="https://github.com/peterk/munin-indexer">Munin source code</a>
+      </div>
+    </footer>
+    <!-- CoreUI and necessary plugins-->
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/pace.min.js' %}"></script>
+    <script src="{% static 'js/perfect-scrollbar.min.js' %}"></script>
+    <script src="{% static 'js/coreui.min.js' %}"></script>
+    <!-- Plugins and scripts required by this view-->
+    <script src="{% static 'js/Chart.min.js' %}"></script>
+    <script src="{% static 'js/custom-tooltips.min.js' %}"></script>
+    <script src="/chart_script.js"></script>
+  </body>
+</html>

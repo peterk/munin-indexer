@@ -7,6 +7,7 @@ services:
       - env_file
     volumes:
       - ./data:/data
+    restart: unless-stopped
   mq:
     image: rabbitmq:3.7.8-alpine
     hostname: mq
@@ -17,12 +18,12 @@ services:
     ports:
       - "15672"
       - "5672"
-    restart: always        
+    restart: unless-stopped
   web:
     build: ./munin_web
     env_file:
       - env_file
-    command: sh -c './wait-for.sh db:5432 -t 60 -- python manage.py runserver 0.0.0.0:8000'
+    command: sh -c './wait-for-db.sh'
     volumes:
       - ./munin_web/muninweb:/code
       - ./jobs:/jobs        
@@ -31,12 +32,12 @@ services:
       - "4444:8000"
     depends_on:
       - db
-      - mq
   worker:
     build: ./munin_indexer
     env_file:
       - env_file
     command: sh -c './wait-for.sh web:8000 -t 60 -- python worker.py'
+    restart: unless-stopped
     depends_on:
       - web
       - mq
@@ -52,4 +53,5 @@ services:
       - web
       - mq
     command: sh -c './wait-for.sh web:8000 -t 60 -- python worker.py'
+    restart: unless-stopped
     shm_size: 1G

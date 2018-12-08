@@ -108,5 +108,9 @@ data/
 archive/
 jobs/
 
+munin_web/muninweb/staticfiles/*
+!munin_web/muninweb/staticfiles/.gitkeep
+
+
 # Docker-compose env file
 env_file
