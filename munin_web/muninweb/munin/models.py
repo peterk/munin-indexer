@@ -54,8 +54,8 @@ class Seed(models.Model):
     def dequeue(self):
         print(f"Moving {self.id} {self.seed} out of discovery queue")
 
-        self.last_check = datetime.now(os.environ["TZ"])
-        self.state= 1
+        self.last_check = datetime.now(pytz.timezone(os.environ["TZ"]))
+        self.statek = 1
         self.save()
 
     def __str__(self):
@@ -207,4 +207,4 @@ class Stats(models.Model):
     post_count = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return str(self.created_at.isoformat())
+        return str(self.id)
