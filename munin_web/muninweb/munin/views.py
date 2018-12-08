@@ -63,18 +63,22 @@ def chart_script(request):
     now = datetime.now(pytz.timezone(os.environ["TZ"]))
     last_week_timedelta = datetime.now() - timedelta(days=7)
     stats = Stats.objects.all().order_by("-id")[:168]
-    post_queue_last7 = [stat.post_crawl_queue for stat in stats]
-    post_queue_last7_max = int(max(post_queue_last7) + max(post_queue_last7) *0.1)
 
-    seed_queue_last7 = [stat.seed_crawl_queue for stat in stats]
-    seed_queue_last7_max = int(max(seed_queue_last7) + max(seed_queue_last7) *0.1)
+    if len(stats) > 0:
+        post_queue_last7 = [stat.post_crawl_queue for stat in stats]
+        post_queue_last7_max = int(max(post_queue_last7) + max(post_queue_last7) *0.1)
 
-    warcs_created_last7 = [stat.warcs_created for stat in stats]
-    stat_labels = [stat.created_at.hour for stat in stats]
-    warcs_created_last7_max = int(max(warcs_created_last7) + max(warcs_created_last7) *0.1)
+        seed_queue_last7 = [stat.seed_crawl_queue for stat in stats]
+        seed_queue_last7_max = int(max(seed_queue_last7) + max(seed_queue_last7) *0.1)
 
-    chart_max = max([post_queue_last7_max, warcs_created_last7_max, seed_queue_last7_max])
-    return render(request, 'chart_script.js',  content_type="text/javascript", context=locals())
+        warcs_created_last7 = [stat.warcs_created for stat in stats]
+        stat_labels = [stat.created_at.hour for stat in stats]
+        warcs_created_last7_max = int(max(warcs_created_last7) + max(warcs_created_last7) *0.1)
+
+        chart_max = max([post_queue_last7_max, warcs_created_last7_max, seed_queue_last7_max])
+        return render(request, 'chart_script.js',  content_type="text/javascript", context=locals())
+    else:
+        return HttpResponse("No stats yet")
 
 
 

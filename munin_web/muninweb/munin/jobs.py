@@ -16,9 +16,9 @@ def queue_stat():
 
     stat = Stats()
     now = datetime.now(pytz.timezone(os.environ["TZ"]))
-    last_hr_timedelta = datetime.now() - timedelta(hours=1)
+    last_hr_timedelta = now - timedelta(hours=1)
 
-    stat.warcs_created = Post.objects.filter(state=2, warc_size__gt=0, created_at__gt=last_hr_timedelta).count()
+    stat.warcs_created = Post.objects.filter(state=1, warc_size__gt=0, created_at__gt=last_hr_timedelta).count()
     stat.post_crawl_queue = Post.objects.filter(state=2).count()
     stat.seed_crawl_queue = Seed.objects.filter(state=2).count()
 
