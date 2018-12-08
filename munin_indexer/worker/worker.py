@@ -59,7 +59,7 @@ def handle_job(message):
         logging.info(f"Job for {seed_url} done!")
 
     except Exception:
-        logging.error("Handle job broke", exc_info=True)
+        logging.error("Handle seed job broke", exc_info=True)
 
 
 
@@ -68,14 +68,14 @@ def callback(ch, method, properties, body):
     logging.info(f"In callback for {body}...")
     handle_job(body)
     ch.basic_ack(delivery_tag = method.delivery_tag)
-    logging.info(f"Sent ack for {body}...")
+    logging.info(f"Sent ack for seed job {body}...")
 
 
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
 
-    logging.info("Starting worker...")
+    logging.info("Starting seed worker...")
     logging.info(f"Creds {os.environ['RABBITMQ_DEFAULT_USER']}")
 
     credentials = pika.PlainCredentials(os.environ['RABBITMQ_DEFAULT_USER'], os.environ["RABBITMQ_DEFAULT_PASS"])
@@ -84,5 +84,5 @@ if __name__ == "__main__":
     channel.queue_declare(queue='indexjob', durable=True)
     channel.basic_qos(prefetch_count=1)
     channel.basic_consume(callback, queue='indexjob')
-    logging.info("Started consuming queue...")
+    logging.info("Started consuming seed index queue...")
     channel.start_consuming()

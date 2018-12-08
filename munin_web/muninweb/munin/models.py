@@ -54,7 +54,7 @@ class Seed(models.Model):
     def dequeue(self):
         print(f"Moving {self.id} {self.seed} out of discovery queue")
 
-        self.last_check = datetime.now(pytz.timezone('Europe/Stockholm'))
+        self.last_check = datetime.now(os.environ["TZ"])
         self.state= 1
         self.save()
 

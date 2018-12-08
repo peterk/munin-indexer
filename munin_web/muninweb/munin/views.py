@@ -62,7 +62,7 @@ def index(request):
 def chart_script(request):
     now = datetime.now(pytz.timezone(os.environ["TZ"]))
     last_week_timedelta = datetime.now() - timedelta(days=7)
-    stats = Stats.objects.all().order_by("-id")[:168]
+    stats = Stats.objects.all().order_by("id")[:168] # last 7 days worth of stat items (24 x 7)
 
     if len(stats) > 0:
         post_queue_last7 = [stat.post_crawl_queue for stat in stats]
