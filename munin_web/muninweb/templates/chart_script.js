@@ -204,8 +204,7 @@ var mainChart = new Chart($('#main-chart'), {
       backgroundColor: 'transparent',
       borderColor: getStyle('--danger'),
       pointHoverBackgroundColor: '#fff',
-      borderWidth: 1,
-      borderDash: [8, 5],
+      borderWidth: 2,
       data: {{post_queue_last7}}
     }]
   },
