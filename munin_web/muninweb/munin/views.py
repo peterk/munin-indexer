@@ -51,7 +51,8 @@ def index(request):
 
     warc_file_count = Post.objects.filter(state=1, warc_size__gt=0).count() 
 
-    archive_size = round(Post.objects.aggregate(Sum("warc_size"))["warc_size__sum"] / 1024 / 1024 / 1024, 1)
+    warc_size_sum = Post.objects.aggregate(Sum("warc_size"))["warc_size__sum"] or 0
+    archive_size = round(warc_size_sum / 1024 / 1024 / 1024, 1)
 
     now = datetime.now(pytz.timezone(os.environ["TZ"]))
     last_week_timedelta = datetime.now() - timedelta(days=7)

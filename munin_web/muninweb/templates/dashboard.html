@@ -73,6 +73,11 @@
                         </tr>
                       </thead>
                       <tbody style="background-color:white">
+                      {% if not last_posts %}
+                      <tr>
+                      <td colspan="5">No posts archived yet. Go to the admin view and add seed URLs to a collection.</td>
+                      </tr>
+                      {% endif %}
                       {% for post in last_posts %}
                         <tr>
                           <td class="text-center">
