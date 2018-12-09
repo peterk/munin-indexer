@@ -153,7 +153,7 @@ class Post(models.Model):
         self.jobid = jobid
 
         credentials = pika.PlainCredentials(os.environ['RABBITMQ_DEFAULT_USER'], os.environ["RABBITMQ_DEFAULT_PASS"])
-        connection = pika.BlockingConnection(pika.ConnectionParameters('mq', 5672, '/', credentials, heartbeat_interval=600, blocked_connection_timeout=300))
+        connection = pika.BlockingConnection(pika.ConnectionParameters('mq', 5672, '/', credentials, heartbeat=600, blocked_connection_timeout=300))
         channel = connection.channel()
         channel.queue_declare(queue='archivejob', durable=True)
         channel.basic_publish(exchange='', routing_key='archivejob', body=message, properties=pika.BasicProperties(delivery_mode = 2,))
