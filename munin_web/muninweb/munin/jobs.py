@@ -18,11 +18,11 @@ def queue_stat():
     now = datetime.now(pytz.timezone(os.environ["TZ"]))
     last_hr_timedelta = now - timedelta(hours=1)
 
-    stat.warcs_created = Post.objects.filter(state=1, warc_size__gt=0, created_at__gt=last_hr_timedelta).count()
+    stat.warcs_created = Post.objects.filter(state=1, warc_size__gt=0, last_crawled_at__gt=last_hr_timedelta).count()
     stat.post_crawl_queue = Post.objects.filter(state=2).count()
     stat.seed_crawl_queue = Seed.objects.filter(state=2).count()
 
-    warc_size = Post.objects.filter(created_at__gt=last_hr_timedelta).aggregate(Sum("warc_size"))["warc_size__sum"]
+    warc_size = Post.objects.filter(last_crawled_at__gt=last_hr_timedelta).aggregate(Sum("warc_size"))["warc_size__sum"]
     if warc_size:
         stat.warc_size_total = round(warc_size / 1024 / 1024 / 1024, 2)
 
