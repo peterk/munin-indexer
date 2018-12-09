@@ -2,7 +2,7 @@
 
 This tool will monitor open Facebook and Instagram account seeds for new posts and archive those posts available on the open web. Posts are archived in the WARC file format using the excellent Squidwarc package. A simple dashboard is available to monitor collection.
 
-<img src="https://user-images.githubusercontent.com/19284/49688338-a02aad00-fb10-11e8-96e2-a2705c9f2110.png" alt="Munin dashboard screenshot">
+<img src="https://user-images.githubusercontent.com/19284/49699663-3e337b80-fbd4-11e8-8282-035ea7f219ba.png" alt="Munin dashboard screenshot">
 
 # Install
 
