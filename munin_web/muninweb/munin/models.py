@@ -38,7 +38,7 @@ class Seed(models.Model):
         message = json.dumps(jd)
 
         credentials = pika.PlainCredentials(os.environ['RABBITMQ_DEFAULT_USER'], os.environ["RABBITMQ_DEFAULT_PASS"])
-        connection = pika.BlockingConnection(pika.ConnectionParameters('mq', 5672, '/', credentials, heartbeat_interval=600, blocked_connection_timeout=300))
+        connection = pika.BlockingConnection(pika.ConnectionParameters('mq', 5672, '/', credentials, heartbeat=600, blocked_connection_timeout=300))
         channel = connection.channel()
         channel.queue_declare(queue='indexjob', durable=True)
         channel.basic_publish(exchange='', routing_key='indexjob', body=message, properties=pika.BasicProperties(delivery_mode = 2,))
@@ -55,7 +55,7 @@ class Seed(models.Model):
         print(f"Moving {self.id} {self.seed} out of discovery queue")
 
         self.last_check = datetime.now(pytz.timezone(os.environ["TZ"]))
-        self.statek = 1
+        self.state = 1
         self.save()
 
     def __str__(self):
