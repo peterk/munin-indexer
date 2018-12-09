@@ -38,7 +38,7 @@
                   <div class="card-body">
                     <div class="btn-group float-right">
                     </div>
-                    <div class="text-value">0 / 0</div>
+                    <div class="text-value">{{crawl_error_count}}</div>
                     <div>Crawl errors</div>
                   </div>
                 </div>
@@ -68,7 +68,7 @@
                             Id
                           </th>
                           <th>Post</th>
-                          <th class="text-right">WARC size (Kb)</th>
+                          <th class="text-right">Size (Kb)</th>
                           <th class="text-center">Type</th>
                           <th>Created</th>
                         </tr>
@@ -80,8 +80,15 @@
                         <tr>
                           <td class="text-center">
                             <div>
-                              {{post.id}}
+                              <a style="color:black" href="/admin/munin/post/{{post.id}}/change/">{{post.id}}</a>
                             </div>
+                            <span>
+                            {% if post.last_error|length > 0 %}
+                            <i class="fa fa-times" style="color:red"></i>
+                            {% else %}
+                            <i class="fa fa-check" style="color:green"></i>
+                            {% endif %}
+                            </span>
                           </td>
                           <td>
                             <div><a href="{{post.url}}" target="_blank">{{post.url|slice:":100"}}</a></div>

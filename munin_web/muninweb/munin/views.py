@@ -56,7 +56,9 @@ def index(request):
     now = datetime.now(pytz.timezone(os.environ["TZ"]))
     last_week_timedelta = datetime.now() - timedelta(days=7)
 
-    last_posts = Post.objects.filter(state=1, warc_size__gt=0).order_by("-id")[:5]
+    last_posts = Post.objects.filter(state=1, last_crawled_at__gt=last_week_timedelta).order_by("-last_crawled_at")[:10]
+
+    crawl_error_count = Post.objects.exclude(last_error="").count()
 
     return render(request, 'dashboard.html', context=locals())
 
