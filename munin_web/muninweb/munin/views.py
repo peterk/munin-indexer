@@ -9,6 +9,7 @@ import subprocess
 import pytz
 import os
 from datetime import datetime, timezone, timedelta
+import math
 
 
 @login_required
@@ -77,7 +78,7 @@ def chart_script(request):
         stat_labels = [stat.created_at.hour for stat in stats]
         warcs_created_last7_max = int(max(warcs_created_last7) + max(warcs_created_last7) *0.1)
 
-        chart_max = max([post_queue_last7_max, warcs_created_last7_max, seed_queue_last7_max])
+        chart_max = int(math.ceil(max([post_queue_last7_max, warcs_created_last7_max, seed_queue_last7_max]) / 100.0)) * 100
         return render(request, 'chart_script.js',  content_type="text/javascript", context=locals())
     else:
         return HttpResponse("No stats yet")
