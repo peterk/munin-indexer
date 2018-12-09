@@ -58,6 +58,63 @@
                 </div>
               </div>
             </div>
+            
+            <div class="row">
+              <div class="col-md-12">
+              <table class="table table-responsive-sm table-hover table-outline">
+                      <thead class="thead-light">
+                        <tr>
+                          <th class="text-center">
+                            Id
+                          </th>
+                          <th>Post</th>
+                          <th class="text-right">WARC size (Kb)</th>
+                          <th class="text-center">Type</th>
+                          <th>Created</th>
+                        </tr>
+                      </thead>
+                      <tbody style="background-color:white">
+
+
+                      {% for post in last_posts %}
+                        <tr>
+                          <td class="text-center">
+                            <div>
+                              {{post.id}}
+                            </div>
+                          </td>
+                          <td>
+                            <div><a href="{{post.url}}" target="_blank">{{post.url}}</a></div>
+                            <div class="small text-muted">
+                              <span>Seed:</span> {{post.seed}}</div>
+                          </td>
+                          <td>
+                              <div class="text-right">
+                                <strong>{{post.warc_size_kb}}</strong>
+                              </div>
+                          </td>
+                          <td class="text-center">
+                          {% if post.url|slice:":25" == 'https://www.instagram.com' %}
+                            <i class="fa fa-instagram" style="font-size:24px"></i>
+                            <span class="sr-only">Instagram</span>
+                            {% else %}
+                            <i class="fa fa-facebook" style="font-size:24px"></i>
+                            <span class="sr-only">Facebook</span>
+                            {% endif %}
+                          </td>
+                          <td>
+                            <strong>{{ post.last_crawled_at|timesince }} ago</strong>
+                          </td>
+                        </tr>
+
+
+                        {% endfor %}
+                        </tr>
+                      </tbody>
+                    </table>
+              
+              </div>
+            </div>
             <!-- /.card-->
           </div>
 
