@@ -27,3 +27,5 @@ Set up a superuser:
 `$ docker-compose exec web python manage.py createsuperuser`
 
 Login to the admin dashboard with the newly created superuser at http://0.0.0.0:4444/admin
+
+Start by adding your first Collection item. Then add one or more seed URLs to the collection (e.g. https://www.instagram.com/visit_berlin/ ). You can add multiple seeds (one per line) fron the dashboard.
