@@ -10,7 +10,7 @@ import pytz
 import os
 from datetime import datetime, timezone, timedelta
 import math
-
+from random import random
 
 @login_required
 def bulk_add(request):
@@ -64,25 +64,39 @@ def index(request):
     return render(request, 'dashboard.html', context=locals())
 
 
+def hours_ago(timestamp):
+    now = datetime.now(pytz.timezone(os.environ["TZ"]))
+    delta = now - timestamp
+    return (delta.days*24) + int(delta.seconds/3600)
+
+
 @login_required
 def chart_script(request):
     now = datetime.now(pytz.timezone(os.environ["TZ"]))
-    last_week_timedelta = datetime.now() - timedelta(days=7)
-    stats = Stats.objects.all().order_by("id")[:168] # last 7 days worth of stat items (24 x 7)
+    last_week_timedelta = now - timedelta(days=7)
+    stats = Stats.objects.filter(created_at__gt=last_week_timedelta).order_by("id")[:100] # last 7 days worth of stat items (24 x 7)
 
     if len(stats) > 0:
         post_queue_last7 = [stat.post_crawl_queue for stat in stats]
+        #post_queue_last7 = [int(random()*1200) for stat in stats]
         post_queue_last7_max = int(max(post_queue_last7) + max(post_queue_last7) *0.1)
+        post_queue_last7 = ', '.join(map(str,post_queue_last7))
 
         seed_queue_last7 = [stat.seed_crawl_queue for stat in stats]
         seed_queue_last7_max = int(max(seed_queue_last7) + max(seed_queue_last7) *0.1)
+        seed_queue_last7 = ', '.join(map(str,seed_queue_last7))
 
         warcs_created_last7 = [stat.warcs_created for stat in stats]
-        stat_labels = [stat.created_at.hour for stat in stats]
+        #warcs_created_last7 = [int(random()*100) for stat in stats]
         warcs_created_last7_max = int(max(warcs_created_last7) + max(warcs_created_last7) *0.1)
+        warcs_created_last7 = ', '.join(map(str, warcs_created_last7))
+        
+        stat_labels = [hours_ago(stat.created_at) for stat in stats]
+        stat_labels = ', '.join(map(str, stat_labels))
+        stat_dates = [stat.id for stat in stats]
 
         chart_max = int(math.ceil(max([post_queue_last7_max, warcs_created_last7_max, seed_queue_last7_max]) / 100.0)) * 100
-        return render(request, 'chart_script.js',  content_type="text/javascript", context=locals())
+        return render(request, 'chart_script2.js',  content_type="text/javascript", context=locals())
     else:
         return HttpResponse("No stats yet")
 
