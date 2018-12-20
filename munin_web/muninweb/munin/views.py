@@ -74,7 +74,8 @@ def hours_ago(timestamp):
 def chart_script(request):
     now = datetime.now(pytz.timezone(os.environ["TZ"]))
     last_week_timedelta = now - timedelta(days=7)
-    stats = Stats.objects.filter(created_at__gt=last_week_timedelta).order_by("id")[:100] # last 7 days worth of stat items (24 x 7)
+    stats = Stats.objects.all().order_by("-id")[:96] # last 4 days worth of stat items (24 x 3)
+    stats = list(reversed(stats))
 
     if len(stats) > 0:
         post_queue_last7 = [stat.post_crawl_queue for stat in stats]
@@ -96,7 +97,7 @@ def chart_script(request):
         stat_dates = [stat.id for stat in stats]
 
         chart_max = int(math.ceil(max([post_queue_last7_max, warcs_created_last7_max, seed_queue_last7_max]) / 100.0)) * 100
-        return render(request, 'chart_script2.js',  content_type="text/javascript", context=locals())
+        return render(request, 'chart_script.js',  content_type="text/javascript", context=locals())
     else:
         return HttpResponse("No stats yet")
 
