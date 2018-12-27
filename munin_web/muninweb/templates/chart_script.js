@@ -48,7 +48,7 @@ var mainChart = new Chart($('#main-chart'), {
         ticks: {
           maxTicksLimit: 8,
           stepSize: 12,
-        }
+        },
       }],
       yAxes: [{
         id: 'A',
