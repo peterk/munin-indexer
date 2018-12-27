@@ -39,7 +39,7 @@ def queue_crawls():
     with check_frequency and add them to seed queue. Seeds will be crawled for links to posts."""
 
     print("In scheduler for seeds archiving")
-    seeds = Seed.objects.exclude(state=2)
+    seeds = Seed.objects.exclude(state=2, deactivated=True)
 
     for seed in seeds:
         if not seed.last_check:

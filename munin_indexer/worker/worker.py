@@ -36,7 +36,7 @@ def get_scraper_from_seed_url(seed_url):
 
 
 def handle_job(message):
-    """Start working on a job.
+    """Look for new posts for seed.
     """
     logging.info(f"Started working on {message}")
 
@@ -46,20 +46,23 @@ def handle_job(message):
 
         scraper = get_scraper_from_seed_url(seed_url)
 
+
         for i, item in enumerate(scraper.get_items(), start=1):
             r = requests.post('http://web:8000/add_post/', data = {"seed_url": seed_url, 'post_url': item})
-            logging.info(f"Status {r.status_code} for {seed_url}: {item}")
+            logging.info(f"Status {r.status_code} for {seed_url}: #{i} {item}")
 
             if i >= MAX_POSTS or r.status_code == requests.codes.forbidden:
                 logging.info("Stopping")
-                r = requests.post('http://web:8000/dequeue_seed/', data = {"seed_url": seed_url})
-                logging.info(f"Dequeued {seed_url}")
                 break
 
         logging.info(f"Job for {seed_url} done!")
 
     except Exception:
-        logging.error("Handle seed job broke", exc_info=True)
+        logging.error("Handle seed job broke :-(", exc_info=True)
+    finally:
+        logging.info(f"Dequeueing {seed_url}")
+        r = requests.post('http://web:8000/dequeue_seed/', data = {"seed_url": seed_url})
+        logging.info(f"Status: {r.status_code}")
 
 
 
@@ -79,7 +82,7 @@ if __name__ == "__main__":
     logging.info(f"Creds {os.environ['RABBITMQ_DEFAULT_USER']}")
 
     credentials = pika.PlainCredentials(os.environ['RABBITMQ_DEFAULT_USER'], os.environ["RABBITMQ_DEFAULT_PASS"])
-    connection = pika.BlockingConnection(pika.ConnectionParameters(host='mq', port=5672, heartbeat_interval=600, blocked_connection_timeout=300, virtual_host='/', credentials=credentials, connection_attempts=20, retry_delay=4))
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host='mq', port=5672, heartbeat=600, blocked_connection_timeout=300, virtual_host='/', credentials=credentials, connection_attempts=20, retry_delay=4))
     channel = connection.channel()
     channel.queue_declare(queue='indexjob', durable=True)
     channel.basic_qos(prefetch_count=1)

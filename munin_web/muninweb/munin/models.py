@@ -27,6 +27,9 @@ class Seed(models.Model):
     state = models.PositiveIntegerField(choices=SEED_QUEUE_STATES, default=1)
     created_at = models.DateTimeField(auto_now_add=True,)
     check_frequency = models.PositiveIntegerField(default=86400)
+    deactivated = models.BooleanField(default=False)
+    note = models.TextField(blank=True, default="")
+
 
     def enqueue(self):
         """Put into discovery queue."""
