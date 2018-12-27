@@ -44,7 +44,6 @@ def bulk_add(request):
 
 @login_required
 def index(request):
-
     #stats for dashboard - also see chart script below
     post_queue_length = Post.objects.filter(state=2).count()
     seed_queue_length = Seed.objects.filter(state=2).count()
@@ -55,7 +54,7 @@ def index(request):
     archive_size = round(warc_size_sum / 1024 / 1024 / 1024, 1)
 
     now = datetime.now(pytz.timezone(os.environ["TZ"]))
-    last_week_timedelta = datetime.now() - timedelta(days=7)
+    last_week_timedelta = now - timedelta(days=7)
 
     last_posts = Post.objects.filter(state=1, last_crawled_at__gt=last_week_timedelta).order_by("-last_crawled_at")[:10]
 
@@ -73,8 +72,7 @@ def hours_ago(timestamp):
 @login_required
 def chart_script(request):
     now = datetime.now(pytz.timezone(os.environ["TZ"]))
-    last_week_timedelta = now - timedelta(days=7)
-    stats = Stats.objects.all().order_by("-id")[:96] # last 4 days worth of stat items (24 x 3)
+    stats = Stats.objects.all().order_by("-id")[:96] # last 4 days worth of stat items (24 x 4)
     stats = list(reversed(stats))
 
     if len(stats) > 0:
