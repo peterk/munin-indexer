@@ -68,6 +68,7 @@ class Seed(models.Model):
 class Post(models.Model):
     seed = models.ForeignKey(Seed, on_delete=models.CASCADE)
     url = models.URLField(max_length=4000, db_index=True, unique=True)
+    uid = models.CharField(max_length=255, blank=False, null=False, db_index=True, help_text='Unique identifier for post as per the website deifnition')
     state = models.PositiveIntegerField(choices=SEED_QUEUE_STATES, default=1)
     warc_path = models.TextField(blank=True, null=True)
     warc_size = models.PositiveIntegerField(blank=True, null=True)
