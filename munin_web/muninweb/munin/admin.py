@@ -5,6 +5,7 @@ from .models import *
 class PostAdmin(admin.ModelAdmin):
     list_display = ('short_url', 'uid', 'warc_size_kb', 'created_at', 'retry_count', 'state')
     list_filter = ('retry_count', 'state', 'created_at')
+    search_fields = ('jobid', 'uid', 'url')
 
 class PostInline(admin.TabularInline):
     model = Post
