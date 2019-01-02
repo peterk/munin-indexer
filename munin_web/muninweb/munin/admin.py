@@ -3,7 +3,7 @@ from django.contrib import admin
 from .models import *
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('short_url', 'warc_size_kb', 'created_at', 'retry_count', 'state')
+    list_display = ('short_url', 'uid', 'warc_size_kb', 'created_at', 'retry_count', 'state')
     list_filter = ('retry_count', 'state', 'created_at')
 
 class PostInline(admin.TabularInline):
@@ -12,7 +12,7 @@ class PostInline(admin.TabularInline):
 class SeedAdmin(admin.ModelAdmin):
     list_display = ('seed', 'created_at', 'collection', 'last_check', 'state')
     list_filter = ('state', )
-    inlines = [PostInline,]
+    #inlines = [PostInline,]
 
 class SeedInline(admin.TabularInline):
     model = Seed
