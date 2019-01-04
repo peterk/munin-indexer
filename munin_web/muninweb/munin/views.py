@@ -188,9 +188,12 @@ def dequeue_post_url(request):
         post.dequeue(warc_path=warc_path, warc_size=warc_size, last_error=last_error)
 
     except Seed.DoesNotExist:
+        print("No Seed matches the given query.")
         raise Http404("No Seed matches the given query.")
     except Post.DoesNotExist:
+        print("No Post matches the given query.")
         raise Http404("No Post matches the given query.")
-    except Exception as e: print(e)
+    except Exception as e: 
+        print(e)
 
     return HttpResponse(f"Dequeued: {post_url}")
