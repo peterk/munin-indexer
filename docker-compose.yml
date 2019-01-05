@@ -28,6 +28,8 @@ services:
       - ./munin_web/muninweb:/code
       - ./jobs:/jobs        
       - ./scripts:/scripts        
+      - ./archive:/archive
+      - ./deleted:/deleted
     ports:
       - "4444:8000"
     depends_on:
