@@ -19,9 +19,7 @@ class SeedInline(admin.TabularInline):
     model = Seed
 
 class CollectionAdmin(admin.ModelAdmin):
-   inlines = [
-        SeedInline,
-    ]
+    pass
 
         
 class StatAdmin(admin.ModelAdmin):
