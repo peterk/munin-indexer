@@ -67,6 +67,7 @@
                             Id
                           </th>
                           <th>Post</th>
+                          <th class="text-center">Play</th>
                           <th class="text-right">Size (Kb)</th>
                           <th class="text-center">Type</th>
                           <th>Created</th>
@@ -96,6 +97,9 @@
                             <div><a href="{{post.url}}" target="_blank">{{post.url|slice:":100"}}</a></div>
                             <div class="small text-muted">
                               <span>Seed:</span> {{post.seed}}</div>
+                          </td>
+                          <td>
+                          <a href="//{{hostname}}:4445/munin/{{post.url}}"><i class="fa fa-play" style="font-size:24px"></i></a>
                           </td>
                           <td>
                               <div class="text-right">

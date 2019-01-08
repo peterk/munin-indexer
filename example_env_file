@@ -7,3 +7,4 @@ RABBITMQ_DEFAULT_PASS=hunter2_example_password
 INDOCKER=true
 TZ=Europe/Stockholm
 SECRET_KEY=MAKEYOUROWN
+HOSTNAME=localhost

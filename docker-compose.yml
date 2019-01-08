@@ -1,5 +1,4 @@
-version: '3'
-
+version: '3.2'
 services:
   db:
     image: postgres
@@ -19,6 +18,19 @@ services:
       - "15672"
       - "5672"
     restart: unless-stopped
+  playback:
+    build: ./munin_playback
+    env_file:
+      - env_file
+    volumes:
+      - type: bind
+        source: ./archive 
+        target: /playback/collections/munin/archive
+        read_only: true
+    ports:
+      - "4445:8080"
+    depends_on:
+      - web
   web:
     build: ./munin_web
     env_file:

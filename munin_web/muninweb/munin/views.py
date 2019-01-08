@@ -61,6 +61,8 @@ def index(request):
 
     crawl_error_count = Post.objects.exclude(last_error__isnull=True).exclude(last_error__exact="").count()
 
+    hostname = os.environ["HOSTNAME"]
+
     return render(request, 'dashboard.html', context=locals())
 
 
