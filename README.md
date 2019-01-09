@@ -9,7 +9,7 @@ This tool will monitor open Facebook and Instagram account seeds for new posts a
 
 Munin builds on great software by other people. Indexing of post items is done in [snscrape](https://github.com/JustAnotherArchivist/snscrape). Archiving of individual pages is done with [Squidwarc](https://github.com/N0taN3rd/Squidwarc). Playback of WARC files is enabled by [pywb](https://pywb.readthedocs.io/en/latest/).
 
-<img src="https://user-images.githubusercontent.com/19284/50910349-eafc5500-142d-11e9-8028-12b818cfbf1f.png" alt="System overview - a Django application manages seeds and post URL:s in a PostgreSQL database. A queue for indexing finds more post URLs for the seeds. A queue for archiving makes sure post URLs are archived."/>
+<img src="https://user-images.githubusercontent.com/19284/50910651-8392d500-142e-11e9-9133-8766249c09b8.png" alt="System overview - a Django application manages seeds and post URL:s in a PostgreSQL database. A queue for indexing finds more post URLs for the seeds. A queue for archiving makes sure post URLs are archived."/>
 
 # Install
 
