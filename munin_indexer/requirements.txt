@@ -1,7 +1,6 @@
 pika==0.12.0
-requests==2.20.0
 url-normalize==1.3.3
 fake-useragent==0.1.10
 pika==0.12.0
-snscrape==0.1.3
+git+git://github.com/peterk/snscrape.git#egg=snscrape
 pytz==2018.3

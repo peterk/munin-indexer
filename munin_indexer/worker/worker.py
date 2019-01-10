@@ -15,6 +15,10 @@ import requests
 
 MAX_POSTS = 100
 
+no_proxies = {
+  "http": None,
+  "https": None,
+}
 
 def get_scraper_from_seed_url(seed_url):
     scraper = None
@@ -47,11 +51,11 @@ def handle_job(message):
         scraper = get_scraper_from_seed_url(seed_url)
 
         for i, item in enumerate(scraper.get_items(), start=1):
-            r = requests.post('http://web:8000/add_post/', data = {"seed_url": seed_url, 'post_url': item})
+            r = requests.post('http://web:8000/add_post/', proxies=no_proxies, data = {"seed_url": seed_url, 'post_url': item})
             logging.info(f"Status {r.status_code} for {seed_url}: #{i} {item}")
 
-            if i > MAX_POSTS: #or r.status_code == requests.codes.forbidden:
-                logging.info("Stopping because max count reached")
+            if i > MAX_POSTS or r.status_code == requests.codes.forbidden:
+                logging.info("Stopping because max count or previous post reached")
                 break
 
         logging.info(f"Job for {seed_url} done!")
@@ -60,7 +64,7 @@ def handle_job(message):
         logging.error("Handle seed job broke :-(", exc_info=True)
     finally:
         logging.info(f"Dequeueing {seed_url}")
-        r = requests.post('http://web:8000/dequeue_seed/', data = {"seed_url": seed_url})
+        r = requests.post('http://web:8000/dequeue_seed/', proxies=no_proxies, data = {"seed_url": seed_url})
         logging.info(f"Status: {r.status_code}")
 
 

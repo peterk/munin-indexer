@@ -50,11 +50,20 @@ services:
     build: ./munin_indexer
     env_file:
       - env_file
+    environment:
+      - HTTPS_PROXY=socks5://torproxy:5566
+      - HTTP_PROXY=socks5://torproxy:5566
     command: sh -c './wait-for.sh web:8000 -t 60 -- python worker.py'
     restart: unless-stopped
     depends_on:
       - web
       - mq
+      - torproxy
+  torproxy:
+    image: negash/docker-haproxy-tor:latest
+    hostname: torproxy
+    ports:
+      - "5566"
   archiveworker:
     build: ./munin_archiver
     env_file:

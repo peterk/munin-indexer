@@ -1,6 +1,6 @@
 FROM python:3.7.1-alpine3.8
 
-RUN apk add --update --no-cache g++ gcc libxslt-dev tzdata netcat-openbsd
+RUN apk add --update --no-cache g++ gcc libxslt-dev tzdata netcat-openbsd git
 
 RUN echo $TZ > /etc/timezone
 
