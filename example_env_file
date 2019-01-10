@@ -8,3 +8,4 @@ INDOCKER=true
 TZ=Europe/Stockholm
 SECRET_KEY=MAKEYOUROWN
 HOSTNAME=localhost
+RABBITMQ_NODENAME=rabbit@localhost
