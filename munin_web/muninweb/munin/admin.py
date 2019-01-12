@@ -13,7 +13,7 @@ class PostInline(admin.TabularInline):
 class SeedAdmin(admin.ModelAdmin):
     list_display = ('seed', 'created_at', 'collection', 'last_check', 'state')
     list_filter = ('state', )
-    #inlines = [PostInline,]
+    search_fields = ('seed', 'note')
 
 class SeedInline(admin.TabularInline):
     model = Seed
