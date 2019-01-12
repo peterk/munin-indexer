@@ -7,7 +7,7 @@ class Command(BaseCommand):
     help = 'Adjust hour of last_check for seeds to smooth crawl jobs.'
 
     def print_stats(self):
-        s = Seed.objects.filter(last_check__isnull=False).order_by("last_check")
+        s = Seed.objects.filter(last_check__isnull=False, state=1).order_by("last_check")
         groups = itertools.groupby(sorted(s, key=lambda y:y.last_check.hour), lambda x:int(x.last_check.hour))
         self.stdout.write(self.style.SUCCESS("Seeds by hour:"))
         for a, b in groups:
@@ -18,7 +18,7 @@ class Command(BaseCommand):
 
         self.print_stats()
 
-        s = Seed.objects.filter(last_check__isnull=False).order_by("last_check")
+        s = Seed.objects.filter(last_check__isnull=False, state=1).order_by("last_check")
         seeds_per_hour = round(s.count()/24.0)
         self.stdout.write(self.style.SUCCESS(f"Optimal seeds by hour: {seeds_per_hour}"))
 
