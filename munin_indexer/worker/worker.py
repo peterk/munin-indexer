@@ -60,12 +60,14 @@ def handle_job(message):
 
         logging.info(f"Job for {seed_url} done!")
 
+        logging.info(f"Dequeueing {seed_url}")
+        r = requests.post('http://web:8000/dequeue_seed/', proxies=no_proxies, data = {"seed_url": seed_url})
+        logging.info(f"Dequeue status: {r.status_code}")
+
     except Exception:
         logging.error("Handle seed job broke :-(", exc_info=True)
     finally:
-        logging.info(f"Dequeueing {seed_url}")
-        r = requests.post('http://web:8000/dequeue_seed/', proxies=no_proxies, data = {"seed_url": seed_url})
-        logging.info(f"Status: {r.status_code}")
+        logging.info("Continuing...")
 
 
 
