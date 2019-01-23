@@ -21,10 +21,8 @@ RUN apt-get install -y gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libc
 # Install regular Chrome as an alternative - add selection in web frontend later?
 RUN apt-get install google-chrome-stable -y
 
-
 RUN mkdir -p /archive
 RUN mkdir -p /scripts
-
 
 # Get squidwarc w puppeteer support
 RUN mkdir -p /usr/src/app
@@ -33,24 +31,18 @@ RUN mkdir -p /jobs
 WORKDIR /usr/src/app
 
 # install squidwarc while we have access to python 2.7
-RUN git clone --depth 1 https://github.com/N0taN3rd/Squidwarc.git
+RUN git clone https://github.com/N0taN3rd/Squidwarc.git
 WORKDIR Squidwarc
-RUN git submodule init
-RUN git submodule update
+
+# Temporary fix for node-warc submodule
+RUN git submodule deinit -f node-warc
 RUN npm install 
 
+RUN git clone https://github.com/N0taN3rd/node-warc.git
 WORKDIR node-warc
 RUN npm install 
 
 WORKDIR Squidwarc
-#RUN npm list node-warc
-
-#RUN git clone https://github.com/N0taN3rd/node-warc.git
-#WORKDIR node-warc
-#RUN npm install 
-
-#WORKDIR Squidwarc
-#RUN ./bootstrap.sh
 
 # get python 3.6.6 (build from source)
 ENV LANG C.UTF-8
@@ -98,15 +90,15 @@ RUN cd /usr/local/bin \
 	&& ln -s python3-config python-config
 
 # if this is called "PIP_VERSION", pip explodes with "ValueError: invalid truth value '<VERSION>'"
-ENV PYTHON_PIP_VERSION 18.0
+ENV PYTHON_PIP_VERSION 19.0
 
+RUN python --version
 RUN set -ex; \
 	\
 	wget -O get-pip.py 'https://bootstrap.pypa.io/get-pip.py'; \
 	\
 	python get-pip.py \
 		--disable-pip-version-check \
-		--no-cache-dir \
 		"pip==$PYTHON_PIP_VERSION" \
 	; \
 	pip --version; \
