@@ -1,7 +1,7 @@
 version: '3.2'
 services:
   db:
-    image: postgres
+    image: postgres:10.6-alpine
     env_file:
       - env_file
     volumes:
