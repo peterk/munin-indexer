@@ -9,8 +9,8 @@ from hashlib import md5
 from django.db.models import Avg, Max, Min, Sum
 
 class Collection(models.Model):
-    name = models.CharField(max_length=255)
-    description = models.TextField()
+    name = models.CharField(max_length=255, help_text="Name of collection (required)")
+    description = models.TextField(help_text="A short description (required)")
     created_at = models.DateTimeField(auto_now_add=True,)
 
     def __str__(self):
