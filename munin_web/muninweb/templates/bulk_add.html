@@ -9,12 +9,13 @@
            {% if messages %}
             <ul class="messages">
                 {% for message in messages %}
-                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|safe }}</li>
                 {% endfor %}
             </ul>
             {% endif %} 
             <form role="form" action="/bulk_add/" method="post">
-            {% csrf_token %}
+				<fieldset {% if not collections %}disabled{% endif %}>
+            	{% csrf_token %}
 				<div class="form-group">
 					<label for="collection">
 						Collection
@@ -32,6 +33,7 @@
                     <textarea class="form-control" name="seeds" id="seeds" cols="20" rows="20"></textarea>
 				</div>
 				<button type="submit" class="btn btn-primary">Add seeds</button>
+				</fieldset>
 			</form>
 		</div>
 		<div class="col-md-4">
