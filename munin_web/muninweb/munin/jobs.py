@@ -7,9 +7,19 @@ from datetime import datetime, timedelta
 from django.utils import timezone
 import os
 import pytz
+from django.core import management
 
 scheduler = BackgroundScheduler()
 scheduler.add_jobstore(DjangoJobStore(), "default")
+
+
+# make a database backup every 24h at 01:00
+@register_job(scheduler, "cron", hour=1, replace_existing=True)
+def backup_db():
+    management.call_command('dbbackup', '-z', '-c')
+    print("Performed database backup")
+
+
 
 @register_job(scheduler, "interval", seconds=3600, replace_existing=True)
 def queue_stat():

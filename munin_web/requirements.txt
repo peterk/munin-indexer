@@ -5,3 +5,4 @@ django-apscheduler==0.2.13
 pika==0.12.0
 pytz==2018.3
 whitenoise==4.1.2
+django-dbbackup==3.2.0

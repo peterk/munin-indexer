@@ -42,6 +42,7 @@ services:
       - ./scripts:/scripts        
       - ./archive:/archive
       - ./deleted:/deleted
+      - ./dbbackup:/dbbackup
     ports:
       - "4444:8000"
     depends_on:
