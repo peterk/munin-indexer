@@ -43,14 +43,21 @@ def queue_stat():
     print("Saved stats item")
 
 
-@register_job(scheduler, "interval", seconds=63, replace_existing=True)
+@register_job(scheduler, "interval", seconds=600, replace_existing=True)
 def queue_crawls():
     """Check all seeds currently not in queue status, compare last_check time
     with check_frequency and add them to seed queue. Seeds will be crawled for links to posts."""
 
     print("In scheduler for seeds archiving")
-    seeds = Seed.objects.exclude(state=2, deactivated=True)
+    current_queue_length = Seed.objects.filter(state=2).count()
+    print(f"Current seed queue length: {current_queue_length}")
 
+    # Don't add if queue is too long already
+    if current_queue_length > 100:
+        print("Seed queue too long. Waiting for it to clear up.")
+        return
+
+    seeds = Seed.objects.exclude(state=2, deactivated=True).order_by("seed.last_check")
     for seed in seeds:
         if not seed.last_check:
             #new seed - add it immediately
@@ -74,7 +81,7 @@ def queue_archiving():
 
     print("In scheduler for posts archiving")
     
-    posts = Post.objects.filter(state=1, warc_path=None)
+    posts = Post.objects.filter(state=1, warc_path=None).order_by("created_at")
     print(f"Found {len(posts)} for archiving.")
 
     for post in posts:
