@@ -23,9 +23,11 @@ urlpatterns = [
     path('', views.index),
     path('chart_script.js', views.chart_script),
     path('bulk_add/', views.bulk_add),
+    path('collection_meta/<int:collection_id>', views.collection_meta),
     path('admin/', admin.site.urls),
     path('seeds/<int:seed_id>/', views.add_post_url_for_seed),
     path('add_post/', views.add_post_url),
     path('dequeue_seed/', views.dequeue_seed),
     path('dequeue_post/', views.dequeue_post_url),
+    path('export_seed_data/', views.export_seed_data),
 ]

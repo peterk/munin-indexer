@@ -1,10 +1,12 @@
 from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_http_methods
 from munin.models import *
 from django.http import Http404, HttpResponse, HttpResponseForbidden
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.db.models import Count
 import subprocess
 import pytz
 import os
@@ -12,11 +14,18 @@ from datetime import datetime, timezone, timedelta
 import math
 from random import random
 from munin.extras import get_uid
+import csv
+from django.http import StreamingHttpResponse
 
 @login_required
 def bulk_add(request):
 
     collections = Collection.objects.all()
+
+    if len(collections) == 0:
+        messages.error(request, "There are no collections to add seeds to. Please create a collection in the <a href='/admin/munin/collection/'>admin interface</a> first.")
+        return render(request, 'bulk_add.html', context={"collections":collections})
+
 
     if request.POST:
         seedstxt =  request.POST.get("seeds")
@@ -41,6 +50,18 @@ def bulk_add(request):
         messages.success(request, f"Added {count} seeds for collection {collection_id}")
 
     return render(request, 'bulk_add.html', context=locals())
+
+
+@login_required
+def export_seed_data(request):
+    seeds = Seed.objects.annotate(post_count=Count('post')).order_by("seed")
+    response = HttpResponse(content_type='text/csv')
+    writer = csv.writer(response)
+    writer.writerow(["seed", "post_count", "deactivated"])
+    for seed in seeds:
+        writer.writerow([seed.seed, seed.post_count, seed.deactivated])
+
+    return response
 
 
 @login_required
@@ -102,6 +123,21 @@ def chart_script(request):
     else:
         return HttpResponse("No stats yet")
 
+
+
+
+@login_required
+def collection_meta(request, collection_id=None):
+    """Render collection metadata in plain text or XML.
+    """
+
+    collection = get_object_or_404(Collection, pk=collection_id) 
+    r = HttpResponse(content_type='text/plain')
+
+    for seed in collection.seed_set.order_by("seed"):
+        r.write(seed.seed + "\n")
+
+    return r
 
 
 @csrf_exempt
