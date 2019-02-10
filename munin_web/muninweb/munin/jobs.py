@@ -57,7 +57,7 @@ def queue_crawls():
         print("Seed queue too long. Waiting for it to clear up.")
         return
 
-    seeds = Seed.objects.exclude(state=2, deactivated=True).order_by("seed.last_check")
+    seeds = Seed.objects.exclude(state=2, deactivated=True).order_by("last_check")
     for seed in seeds:
         if not seed.last_check:
             #new seed - add it immediately
