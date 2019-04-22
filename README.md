@@ -1,7 +1,6 @@
-# Munin - a Facebook and Instagram indexer and archiver
+# Munin - a social media archiver
 
-This tool will monitor open Facebook, Instagram and VKontakte account seeds for new posts and archive those posts available on the open web. Posts are archived in the WARC file format using the excellent Squidwarc package. A playback tool and a simple dashboard is available to monitor collections.
-
+This tool will monitor open Facebook, Instagram and VKontakte account seeds for new posts and archive those posts. Posts are archived in the WARC file format using the excellent Squidwarc package. A playback tool and a simple dashboard is available to monitor collections.
 
 <img src="https://user-images.githubusercontent.com/19284/49699663-3e337b80-fbd4-11e8-8282-035ea7f219ba.png" alt="Munin dashboard screenshot">
 
