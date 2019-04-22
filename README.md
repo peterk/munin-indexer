@@ -12,7 +12,7 @@ Munin builds on great software by other people. Indexing of post items is done i
 
 # Install
 
-Create and empty data directory for postgres called data.
+Create an empty data directory for postgres called data.
 
 `$ mkdir data`
 
