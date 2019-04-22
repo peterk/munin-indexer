@@ -53,13 +53,11 @@ class Seed(models.Model):
         self.state = 2
         self.save()
 
-
     def dequeue(self):
-        print(f"Moving {self.id} {self.seed} out of discovery queue")
-
         self.last_check = datetime.now(pytz.timezone(os.environ["TZ"]))
         self.state = 1
         self.save()
+        print(f"Moved {self.id} {self.seed} out of discovery queue")
 
     def __str__(self):
         return self.seed.replace("https://","")

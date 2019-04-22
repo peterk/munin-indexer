@@ -20,6 +20,17 @@ def backup_db():
     print("Performed database backup")
 
 
+# make a database backup every 24h at 01:00
+@register_job(scheduler, "cron", hour=2, replace_existing=True)
+def backup_db():
+    seeds = Seed.objects.annotate(post_count=Count('post')).order_by("seed")
+    response = HttpResponse(content_type='text/csv')
+    writer = csv.writer(response)
+    writer.writerow(["seed", "post_count", "deactivated"])
+    for seed in seeds:
+        writer.writerow([seed.seed, seed.post_count, seed.deactivated])
+
+    print("Performed seeds export")
 
 @register_job(scheduler, "interval", seconds=3600, replace_existing=True)
 def queue_stat():
