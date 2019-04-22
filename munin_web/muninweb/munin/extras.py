@@ -20,6 +20,9 @@ def get_uid(url):
         elif url.startswith("https://www.instagram.com/"):
                 return path[:-1].split("/")[-1]
 
+        elif url.startswith("https://vk.com/"):
+            return path.split("wall-")[1]
+
         else:
             # we'll go with the url path as the unique identifier
             logger.info(f"Unknown site {url} - returning url path")

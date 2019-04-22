@@ -27,16 +27,27 @@ def get_scraper_from_seed_url(seed_url):
     o = urlparse(seed_url)
 
     user = o.path.replace("/","")
-    print(f"User: {user}")
+    logging.info(f"Get scraper returned user: {user}")
 
     if "instagram" in o.netloc:
-        return snscrape.modules.instagram.InstagramUserScraper(username=user)
+        return snscrape.modules.instagram.InstagramUserScraper(name=user, mode='User')
     elif "facebook" in o.netloc:
         return snscrape.modules.facebook.FacebookUserScraper(username=user)
+    elif "vk.com" in o.netloc:
+        return snscrape.modules.vkontakte.VKontakteUserScraper(username=user)
     else:
         return None
 
 
+def get_post_url(post_item):
+    if type(post_item) is snscrape.modules.instagram.InstagramPost:
+        return post_item.cleanUrl
+    elif type(post_item) is snscrape.modules.facebook.FacebookPost:
+        return post_item.cleanUrl
+    elif type(post_item) is snscrape.modules.vkontakte.VKontaktePost:
+        return post_item.url
+    else:
+        return None
 
 
 def handle_job(message):
@@ -51,8 +62,14 @@ def handle_job(message):
         scraper = get_scraper_from_seed_url(seed_url)
 
         for i, item in enumerate(scraper.get_items(), start=1):
-            r = requests.post('http://web:8000/add_post/', proxies=no_proxies, data = {"seed_url": seed_url, 'post_url': item})
-            logging.info(f"Status {r.status_code} for {seed_url}: #{i} {item}")
+
+
+            r = requests.post('http://web:8000/add_post/', proxies=no_proxies, data = {"seed_url": seed_url, 'post_url': get_post_url(item)})
+
+            if r.status_code == requests.codes.ok:
+                logging.info(f"New post for {seed_url}: #{i} {item}")
+            else:
+                logging.info(f"Status {r.status_code} for {seed_url}: #{i} {item}")
 
             if i > MAX_POSTS or r.status_code == requests.codes.forbidden:
                 logging.info("Stopping because max count or previous post reached")
@@ -73,6 +90,7 @@ def handle_job(message):
 
 def callback(ch, method, properties, body):
     """Work on job from message queue."""
+
     logging.info(f"In callback for {body}...")
     handle_job(body)
     ch.basic_ack(delivery_tag = method.delivery_tag)
