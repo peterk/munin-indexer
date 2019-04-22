@@ -1,4 +1,4 @@
-FROM node:10-slim
+FROM node:10.15.3-stretch-slim
 
 # Get key and repo for google chrome stable
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
