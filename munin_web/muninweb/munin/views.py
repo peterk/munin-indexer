@@ -204,7 +204,7 @@ def dequeue_seed(request):
         seed = Seed.objects.get(seed=seed_url)
         seed.dequeue()
     except Seed.DoesNotExist:
-        raise Http404("No Seed matches the given query.")
+        raise Http404("dequeue_seed: No Seed matches the given query.")
 
     return HttpResponse(f"Dequeued: {seed_url}")
 
@@ -226,11 +226,11 @@ def dequeue_post_url(request):
         post.dequeue(warc_path=warc_path, warc_size=warc_size, last_error=last_error)
 
     except Seed.DoesNotExist:
-        print("No Seed matches the given query.")
-        raise Http404("No Seed matches the given query.")
+        print("dequeue_post_url: No Seed matches the given query.")
+        raise Http404("dequeue_post_url: No Seed matches the given query.")
     except Post.DoesNotExist:
-        print("No Post matches the given query.")
-        raise Http404("No Post matches the given query.")
+        print("dequeue_post_url: No Post matches the given query.")
+        raise Http404("dequeue_post_url: No Post matches the given query.")
     except Exception as e: 
         print(e)
 
