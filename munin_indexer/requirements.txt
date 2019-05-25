@@ -2,5 +2,5 @@ pika==0.12.0
 url-normalize==1.3.3
 fake-useragent==0.1.10
 requests[socks]==2.21.0
-git+git://github.com/JustAnotherArchivist/snscrape.git@64693f74bbca4183b29b664e0a1935b4fdbd2f2a#egg=snscrape
+snscrape==0.2.0
 pytz==2018.3
