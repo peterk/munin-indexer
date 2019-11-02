@@ -52,7 +52,7 @@ def bulk_add(request):
     return render(request, 'bulk_add.html', context=locals())
 
 
-@login_required
+#@login_required
 def export_seed_data(request):
     seeds = Seed.objects.annotate(post_count=Count('post')).order_by("seed")
     response = HttpResponse(content_type='text/csv')
