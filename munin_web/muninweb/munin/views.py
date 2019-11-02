@@ -57,9 +57,9 @@ def export_seed_data(request):
     seeds = Seed.objects.annotate(post_count=Count('post')).order_by("seed")
     response = HttpResponse(content_type='text/csv')
     writer = csv.writer(response, quotechar='"', quoting=csv.QUOTE_ALL)
-    writer.writerow(["collection", "collection_id", "seed", "post_count", "deactivated"])
+    writer.writerow(["collection", "collection_id", "seed_id", "seed", "post_count", "deactivated"])
     for seed in seeds:
-        writer.writerow([seed.collection.name, seed.collection.id, seed.seed, seed.post_count, seed.deactivated])
+        writer.writerow([seed.collection.name, seed.collection.id, seed.id, seed.seed, seed.post_count, seed.deactivated])
 
     return response
 
