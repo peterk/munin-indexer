@@ -23,20 +23,26 @@ Munin builds on great software by other people. Indexing of post items is done i
 `$ cd munin-indexer`
 `$ mkdir data`
 
+<<<<<<< HEAD
 4. Set up environment variables
 
 Rename the `example_env_file` to `env_file` and update it with your settings. You should change the time zone (TZ) to match your location ([see the list of time zone names here](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)). 
+=======
+Copy `example_env_file` to env_file and update it with your settings (no change necessary if you only plan to try it out).
+>>>>>>> 1e96d45202cec639f33724e8ba4a39002c8817aa
 
-Start everything;
+Start everything:
 
 `$ docker-compose up -d`
 
-Set up a superuser:
+The first time the application starts it can take a while (several minutes) before the application becomes available. You can monitor progress by watching the docker logs.
+
+Set up a superuser when the application is up (it will ask you for details to create an administrator):
 
 `$ docker-compose exec web python manage.py createsuperuser`
 
 Login to the admin dashboard with the newly created superuser at http://0.0.0.0:4444/admin
 
-Start by adding your first Collection item in the admin interface. Then add one or more seed URLs to the collection (e.g. https://www.instagram.com/visit_berlin/). You can bulk add multiple seeds (one per line) fron the dashboard.
+Start by adding your first Collection item in the admin interface. Then add one or more seed URLs to the collection (e.g. https://www.facebook.com/visitberlin/). You can bulk add multiple seeds (one per line) fron the dashboard.
 
-After a couple of minutes, archived pages are available for playback from http://0.0.0.0:4445/munin/
+After a couple of minutes the crawler should have discovered public posts and archived them. You can monitor the dashboard for new items added to the collection. Clicking the play icon will open the archived page. All archived pages are available for playback from http://0.0.0.0:4445/munin/
