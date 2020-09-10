@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-Django==2.1.11
-psycopg2-binary==2.8.6
-=======
 Django==2.2.13
-psycopg2-binary==2.8.5
->>>>>>> 1e96d45202cec639f33724e8ba4a39002c8817aa
+psycopg2-binary==2.8.6
 APScheduler==3.5.3
 django-apscheduler==0.2.13
 pika==0.12.0
