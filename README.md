@@ -12,11 +12,20 @@ Munin builds on great software by other people. Indexing of post items is done i
 
 # Install
 
-Create an empty data directory for postgres called data.
+1. To run you need to [install Docker](https://docs.docker.com/get-docker/) and Docker Compose. It has only been tested on Linux and Mac OSX currently and the instructions below are for those platforms. Make sure you have git installed.
 
+2. Clone this repository
+
+`$ git clone https://github.com/peterk/munin-indexer`
+
+3. Enter the directory and create an empty data directory for postgres
+
+`$ cd munin-indexer`
 `$ mkdir data`
 
-Copy `example_env_file` to env_file and update it with your settings.
+4. Set up environment variables
+
+Rename the `example_env_file` to `env_file` and update it with your settings. You should change the time zone (TZ) to match your location ([see the list of time zone names here](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)). 
 
 Start everything;
 
