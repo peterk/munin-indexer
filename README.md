@@ -26,7 +26,6 @@ Munin builds on great software by other people. Indexing of post items is done i
 4. Set up environment variables
 
 Rename the `example_env_file` to `env_file` and update it with your settings. You should change the time zone (TZ) to match your location ([see the list of time zone names here](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)). 
-=======
 
 Start everything:
 
