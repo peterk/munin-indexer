@@ -1,12 +1,24 @@
+# database username (can be left as is)
 POSTGRES_USER=postgres
+# database password (change to something unique for your setup)
 POSTGRES_PASSWORD=hunter2_example_password
+# database name (can be left as is)
 POSTGRES_DB=seedmanager
+# path to location where data is stored (can be left as is)
 PGDATA=/data
+# RabbitMQ username (can be left as is)
 RABBITMQ_DEFAULT_USER=rmquser
+# RabbitmQ password (change to something unique for your setup)
 RABBITMQ_DEFAULT_PASS=hunter2_example_password
 INDOCKER=true
+# Timezone for your setup used in Django app admin interface (Adjust to one of TZ database name from this list https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
 TZ=Europe/Stockholm
+# A unique secret key for your install (generate with python: python -c "import secrets; print(secrets.token_urlsafe())" )
+)
 SECRET_KEY=MAKEYOUROWN
+# Used in the admin interface to generate correct links. Change to the hostname you installed your server under (or use localhost)
 HOSTNAME=localhost
+# Node name of Rabbit MQ (leave as is)
 RABBITMQ_NODENAME=rabbit@localhost
+# seconds between facebook requests to prevent rate limiting
 FACEBOOK_SLEEP_SECS=10
