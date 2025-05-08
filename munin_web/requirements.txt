@@ -1,4 +1,4 @@
-Django==4.2.20
+Django==4.2.21
 psycopg2-binary==2.8.6
 APScheduler==3.5.3
 django-apscheduler==0.2.13
